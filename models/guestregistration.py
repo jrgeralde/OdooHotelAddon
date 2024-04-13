@@ -51,22 +51,48 @@ class guestregistration(models.Model):
             elif not(rec.roomname):    
                 raise ValidationError('Please supply a valid Room Number.')            
             else:
-                rec.state= "RESERVED"
+                pkid = rec.id
+                self._cr.execute("select * from public.fncheck_registrationconflict("+str(pkid)+")")
+                result = self._cr.fetchall()
+                
+                result_cnt = result[0][0]
+                result_msg = result[0][1]
+                
+                if (result_cnt==0):
+                    rec.state= "RESERVED"
+                else:
+                    raise ValidationError(result_msg)
                                
     def action_checkin(self):
-       for rec in self:
-        if rec.guest_id:  
-            rec.state= "CHECKEDIN"
-        elif not(rec.roomname):    
-                raise ValidationError('Please supply a valid Room Number.')             
-        else:
-            raise ValidationError(_('Please supply a valid guest.'))            
+        for rec in self:
+            if not(rec.guest_id):  
+                raise ValidationError('Please supply a valid guest.')            
             
+            elif not(rec.roomname):    
+                raise ValidationError('Please supply a valid Room Number.')            
+            else:
+                pkid = rec.id
+                self._cr.execute("select * from public.fncheck_registrationconflict("+str(pkid)+")")
+                result = self._cr.fetchall()
+                
+                result_cnt = result[0][0]
+                result_msg = result[0][1]
+                
+                if (result_cnt==0):
+                    rec.state= "CHECKEDIN"
+                else:
+                    raise ValidationError(result_msg)
          
     def action_checkout(self):
        for rec in self:
-         rec.state= "CHECKEDOUT"                  
+         if (rec.state=="CHECKEDIN"):  
+            rec.state= "CHECKEDOUT"
+         else:                     
+            raise ValidationError("Guest is not CHECKED IN.") 
 
     def action_cancel(self):
        for rec in self:
-         rec.state= "CANCELLED"                  
+         if (rec.state=="CHECKEDIN"):  
+            raise ValidationError("Guest has already CHECKED IN.")           
+         else:                     
+            rec.state= "CANCELLED"
