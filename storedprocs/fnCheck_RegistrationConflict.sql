@@ -16,12 +16,13 @@ BEGIN
 		cast("datetoSched" as DATE)
 	into troom_id,tdfrom,tdto	
 	from hotel_guestregistration 
+	-- no index is required here since id is the primary key and automatically indexed
 	where id=reg_id;
 	
 	select room_id,count(*)
 	into cnt
 	from hotel_guestregistration 
-	-- supply an index on room_id and state
+	-- note: an index on room_id and state should be supplied to avoid performance problems
 	where room_id=troom_id and 
 	  state in ('RESERVED','CHECKEDIN')
 	  and ("datefromSched"  between tdfrom and tdto
@@ -39,6 +40,7 @@ BEGIN
 	END IF;
 	
 	RETURN QUERY
+	-- return result with cnt converted to 0 if null 
 	select COALESCE(cnt,0),msg;
 END;
 $$ LANGUAGE plpgsql;
