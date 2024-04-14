@@ -51,10 +51,13 @@ class guestregistration(models.Model):
             elif not(rec.roomname):    
                 raise ValidationError('Please supply a valid Room Number.')            
             else:
+                #get the primary key value of guest registration
                 pkid = rec.id
+                #call the postgresql function the check for conflicts
                 self._cr.execute("select * from public.fncheck_registrationconflict("+str(pkid)+")")
                 result = self._cr.fetchall()
                 
+                #gather the query results
                 result_cnt = result[0][0]
                 result_msg = result[0][1]
                 
@@ -71,10 +74,14 @@ class guestregistration(models.Model):
             elif not(rec.roomname):    
                 raise ValidationError('Please supply a valid Room Number.')            
             else:
+                #get the primary key value of guest registration
                 pkid = rec.id
+                
+                #call the postgresql function the check for conflicts
                 self._cr.execute("select * from public.fncheck_registrationconflict("+str(pkid)+")")
                 result = self._cr.fetchall()
                 
+                #gather the query results
                 result_cnt = result[0][0]
                 result_msg = result[0][1]
                 
