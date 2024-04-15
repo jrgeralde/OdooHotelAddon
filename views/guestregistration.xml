@@ -70,10 +70,10 @@
             </group>  
             <group>
               <group>
-                <field name="room_id"/>    
+                <field name="room_id" "state !='DRAFT'"/>    
               </group>
               <group>  
-                <field name="guest_id"/>      
+                <field name="guest_id" "state !='DRAFT'"/>      
               </group> 
             </group>   
             <group>  
