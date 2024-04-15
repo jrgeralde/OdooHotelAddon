@@ -53,7 +53,7 @@
 
               <button 
                 name="action_cancel" 
-                string="Cancel" 
+                string="Cancel Registration" 
                 type="object" 
                 confirm="Tag registration as CANCELLED?"
                 invisible="state != 'DRAFT' and state!= 'RESERVED'"
@@ -70,18 +70,22 @@
             </group>  
             <group>
               <group>
-                <field name="room_id" "state !='DRAFT'"/>    
+                <field name="room_id" readonly="state !='DRAFT'" />    
               </group>
               <group>  
-                <field name="guest_id" "state !='DRAFT'"/>      
+                <field name="guest_id" readonly="state !='DRAFT'" />      
               </group> 
             </group>   
             <group>  
               <group>
-                <field name="datefromSched" readonly="state in ('RESERVED', 'CHECKEDIN','CHECKEDOUT','CANCELLED')"/> 
+                <field name="datefromSched"  readonly="state in ('RESERVED', 'CHECKEDIN','CHECKEDOUT','CANCELLED')"
+                  
+                /> 
               </group>
               <group>  
-                <field name="datetoSched" readonly="state !='DRAFT'"/>
+                <field name="datetoSched"  readonly="state !='DRAFT'"                  
+                /> 
+                
               </group>  
             </group>                  
 
