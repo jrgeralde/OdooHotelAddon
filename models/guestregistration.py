@@ -47,9 +47,15 @@ class guestregistration(models.Model):
         for rec in self:
             if not(rec.guest_id):  
                 raise ValidationError('Please supply a valid guest.')            
-            
+           
             elif not(rec.roomname):    
-                raise ValidationError('Please supply a valid Room Number.')            
+                raise ValidationError('Please supply a valid Room Number.')    
+            elif not(rec.datefromSched):    
+                raise ValidationError('Please supply a valid Date From Schedule.')          
+            elif not(rec.datetoSched):    
+                raise ValidationError('Please supply a valid Date To Schedule.')          
+            elif (rec.datetoSched<rec.datefromSched):    
+                raise ValidationError('Invalid Date Range.')          
             else:
                 #get the primary key value of guest registration
                 pkid = rec.id
@@ -73,6 +79,13 @@ class guestregistration(models.Model):
             
             elif not(rec.roomname):    
                 raise ValidationError('Please supply a valid Room Number.')            
+            elif not(rec.datefromSched):    
+                raise ValidationError('Please supply a valid Date From Schedule.')          
+            elif not(rec.datetoSched):    
+                raise ValidationError('Please supply a valid Date To Schedule.')          
+            elif (rec.datetoSched<rec.datefromSched):    
+                raise ValidationError('Invalid Date Range.')          
+
             else:
                 #get the primary key value of guest registration
                 pkid = rec.id
