@@ -78,10 +78,10 @@
             </group>   
             <group>  
               <group>
-                <field name="datefromSched"/> 
+                <field name="datefromSched" readonly="state in ('RESERVED', 'CHECKEDIN','CHECKEDOUT','CANCELLED')"/> 
               </group>
               <group>  
-                <field name="datetoSched"/>
+                <field name="datetoSched" readonly="state !='DRAFT'"/>
               </group>  
             </group>                  
 
